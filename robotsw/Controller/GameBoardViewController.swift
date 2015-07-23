@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+class GameBoardViewController: UIViewController {
 
 
     @IBOutlet weak var contentView: UIView!
@@ -16,7 +16,6 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setContentViewOnSize(columns: 35)
     }
     
             
@@ -24,6 +23,7 @@ class MainViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
+    // Creating game's board. #TODO add in argument UIView object
     func setContentViewOnSize(#columns: Int) {
         // Creating content view
         let width = self.view.frame.width
@@ -39,7 +39,7 @@ class MainViewController: UIViewController {
                 // View
                 var view = UIView(frame: CGRectMake(CGFloat(x)*viewSize, CGFloat(y)*viewSize, viewSize, viewSize))
                 view.backgroundColor = UIColor.clearColor()
-                // Label
+                // Label, but can be image or whatever <-- #TODO in future
                 var label = UILabel(frame: CGRectMake(0, 0, viewSize, viewSize))
                 label.backgroundColor = UIColor.clearColor()
                 label.text = "x"
