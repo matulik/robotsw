@@ -16,7 +16,7 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setContentViewOnSize(columns: 15)
+        self.setContentViewOnSize(columns: 35)
     }
     
             
@@ -30,23 +30,22 @@ class MainViewController: UIViewController {
         let height = self.contentView.frame.height + (self.navigationController!.navigationBar.frame.height)
         print("height:\(height)\n")
         
-        var labelSize = width/CGFloat(columns)
-        var rows = Int(height/labelSize)
-        println("labelSize:\(labelSize), rows:\(rows)")
+        var viewSize = width/CGFloat(columns)
+        var rows = Int(height/viewSize)+1
+        println("labelSize:\(viewSize), rows:\(rows)")
         
         for y in 0..<rows {
             for x in 0..<columns {
-                var label = UILabel(frame: CGRectMake(CGFloat(x)*labelSize, CGFloat(y)*labelSize, labelSize, labelSize))
-                //println("x:\(x*25), y:\(y*60)")
-                if (y == rows-1) {
-                    label.text = "e"
-                }
-                else {
-                    label.text = "x"
-                }
-                label.textAlignment = NSTextAlignment.Center
+                // View
+                var view = UIView(frame: CGRectMake(CGFloat(x)*viewSize, CGFloat(y)*viewSize, viewSize, viewSize))
+                view.backgroundColor = UIColor.clearColor()
+                // Label
+                var label = UILabel(frame: CGRectMake(0, 0, viewSize, viewSize))
                 label.backgroundColor = UIColor.clearColor()
-                self.contentView.addSubview(label)
+                label.text = "x"
+                label.textAlignment = NSTextAlignment.Center
+                view.addSubview(label)
+                self.contentView.addSubview(view)
             }
         }
     }
