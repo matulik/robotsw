@@ -16,6 +16,8 @@ class GameBoardViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        var table : Table = Table(x: 10, y: 2)
+        table.logContentArray()
     }
     
             

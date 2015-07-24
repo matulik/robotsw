@@ -10,39 +10,38 @@ import Foundation
 
 class Table {
     var contentArray = Array<Array<Field>>()
-    var columns : Int = 0
-    var rows : Int = 0
+    var enemiesArray = Array<Field>()
+    var playerArray = Field()
+    var x : Int = 0
+    var y : Int = 0
     
     var numberOfEnemies : Int = 0
     var numberOfTeleports : Int = 0
     
-    init(columns : Int, rows : Int) {
-        // #TODO initialization Size
-        
+    init(x : Int, y : Int) {
+        self.setContentArraySize(x: x, y: y)
     }
     
-    func setContentArraySize(#columns : Int, rows : Int) {
-        for i in 0..<columns {
-            self.contentArray.append(Array(count: rows, repeatedValue: Field()))
+    // Array g/s
+    func setContentArraySize(#x : Int, y : Int) {
+        self.x = x
+        self.y = y
+        for n in 0..<x {
+            self.contentArray.append(Array(count: y, repeatedValue: Field(fieldType: 0)))
         }
-        self.columns = columns
-        self.rows = rows
     }
     
-    func getContentArraySize() -> Dictionary<String, Int> {
-        var dict = [
-            "columns" : self.columns,
-            "rows"    : self.rows
-        ]
-        return dict
+    func getContentArraySize() -> [Int] {
+        return [self.x, self.y]
     }
     
     func getContentArray() -> Array<Array<Field>> {
         return self.contentArray
     }
     
+    // Enemies g/s
     func setNumberOfEnemies(enemies : Int) {
-        if (enemies <= 0) {
+        if (enemies <= 0 || enemies >= self.x*self.y) {
             println("Bad enemies value. Set enemies to 1")
             self.numberOfEnemies = 1
         }
@@ -55,6 +54,7 @@ class Table {
         return self.numberOfEnemies
     }
     
+    // Teleport g/s
     func setNumberOfTeleports(teleports : Int) {
         if (teleports <= 0) {
             println("Bad teleports value. Set teleports to 1")
@@ -64,4 +64,16 @@ class Table {
             self.numberOfTeleports = teleports
         }
     }
+    
+    func getNumberOfTeleports() -> Int {
+        return self.numberOfTeleports
+    }
+    
+    
+    // Logs methods
+    func logContentArray() {
+        println(self.contentArray)
+    }
+    
+    
 }
