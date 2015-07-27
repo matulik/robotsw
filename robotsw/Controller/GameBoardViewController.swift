@@ -16,11 +16,14 @@ class GameBoardViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        var table : Table = Table(x: 10, y: 2)
+        var table : Table = Table(x: 10, y: 3)
+        table.setNumberOfEnemies(10)
+        table.clearContentArray()
+        table.setPlayerRandom()
+        table.setEnemiesRandom()
         table.logContentArray()
     }
     
-            
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }

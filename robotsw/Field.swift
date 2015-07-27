@@ -10,10 +10,8 @@ import Foundation
 
 class Field {
     // Type of field
-    // 0 - not set, 1 - player, 2 - enemy, 3 - bonus
+    // 0 - not set, 1 - player, 2 - enemy, 3 - crashed enemy, 4 - bonus?
     var fieldType : Int = 0
-    var x : Int = -1
-    var y : Int = -1
     
     init() {
         self.setFieldType(fieldType: 0)
@@ -30,7 +28,7 @@ class Field {
     
     // Return true if allright
     func setFieldType(#fieldType : Int) -> Bool {
-        if (fieldType > 3 || fieldType < 0) {
+        if (fieldType > 4 || fieldType < 0) {
             return false
         }
         else {
