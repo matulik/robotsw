@@ -8,7 +8,6 @@
         <!--Game Board View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
                 <viewController id="BYZ-38-t0r" customClass="GameBoardViewController" customModule="robotsw" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="IJ9-0B-qMN"/>
@@ -45,6 +44,7 @@
                         <outlet property="controlView" destination="pih-2Z-Yoj" id="cD0-Cl-pj4"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1304" y="908"/>
         </scene>
