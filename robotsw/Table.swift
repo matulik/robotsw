@@ -28,7 +28,7 @@ class Table {
     func setContentArraySize(#x : Int, y : Int) {
         self.clearContentArray()
         self.clearEnemiesArray()
-        self.player = Field()
+        self.player = Field(x: 0, y: 0, fieldType: 1)
         self.numberOfEnemies = 0
         self.numberOfTeleports = 0
         
@@ -125,6 +125,10 @@ class Table {
         }
     }
     
+    func getFieldPlayer() -> Field {
+        return self.player
+    }
+    
     // Randomization
     func setEnemiesRandom() {
         var i = 0
@@ -145,6 +149,7 @@ class Table {
             let y = Int(arc4random_uniform(UInt32(self.y)))
             if(self.getFieldOnXY(x: x, y: y).fieldType == 0) {
                 self.setFieldOnXY(x: x, y: y, fieldType: 1)
+                println("set player on: \(x), \(y)")
                 break
             }
             else {
@@ -157,7 +162,7 @@ class Table {
     // in cardinal directions
     
     // N,E,W,S,NE,NS,WE,WS
-    // N - 1, E - 2, W - 3, S - 4
+    // N - 1, E - 2, S - 3, W - 4
     // NE - 5, NS - 6, WE - 7, WS - 8
     // Return:
     // -2 if crashed enemies
@@ -169,6 +174,7 @@ class Table {
     func move(#field: Field, direction: Int) -> Int {
         var x = field.x
         var y = field.y
+        let fieldType = field.fieldType
         
         if (field.fieldType == 3) {
             return -2
@@ -188,13 +194,13 @@ class Table {
             xmove = -1
             ymove = 0
         case 2:
-            if y == self.y {
+            if y == self.y-1 {
                 return -1
             }
             xmove = 0
             ymove = 1
         case 3:
-            if x == self.x {
+            if x == self.x-1 {
                 return -1
             }
             xmove = 1
@@ -206,7 +212,7 @@ class Table {
             xmove = 0
             ymove = -1
         case 5:
-            if x == 0 || y == self.y {
+            if x == 0 || y == self.y-1 {
                 return -1
             }
             xmove = -1
@@ -218,13 +224,13 @@ class Table {
             xmove = -1
             ymove = -1
         case 7:
-            if x == self.x || y == self.y {
+            if x == self.x-1 || y == self.y-1 {
                 return -1
             }
             xmove = 1
             ymove = 1
         case 8:
-            if x == self.x || y == 0 {
+            if x == self.x-1 || y == 0 {
                 return -1
             }
             xmove = 1
@@ -233,19 +239,20 @@ class Table {
             xmove = 0
             ymove = 0
         }
-        
-        let fieldType = field.fieldType
 
         // Colisions
         // If next field is empty, move
         if (self.getFieldOnXY(x: x+xmove, y: y+ymove).fieldType == 0) {
+            if (fieldType == 1) {
+                self.player.x = x+xmove
+                self.player.y = y+ymove
+            }
             self.setFieldOnXY(x: x, y: y, fieldType: 0)
             self.setFieldOnXY(x: x+xmove, y: y+ymove, fieldType: fieldType)
             return 0
         }
         // If on next field is player, and enemies invade
         else if ((self.getFieldOnXY(x: x+xmove, y: y+ymove).fieldType == 1) && fieldType == 2) {
-            //
             return 2
         }
         // If on next field is enemies, and player invade
@@ -266,7 +273,42 @@ class Table {
             self.getFieldOnXY(x: x+xmove, y: y+ymove).setFieldType(fieldType: 3)
             return 1
         }
-        return 5
+        return -1
+    }
+    
+    func getDirectionToPlayer(#field: Field) -> Int {
+        let ex = field.x
+        let ey = field.y
+        let px = self.player.x
+        let py = self.player.y
+        
+        if (ex == px && ey > py) {
+            return 4
+        }
+        if (ex == px && ey < py) {
+            return 2
+        }
+        if (ey == py && ex > px) {
+            return 1
+        }
+        if (ey == py && ex < px) {
+            return 3
+        }
+        if (ex > px && ey > py) {
+            return 5
+        }
+        if (ex > px && ey < py) {
+            return 6
+        }
+        if (ex < px && ey > py){
+            return 8
+        }
+        if (ex < px && ey < py){
+            return 7
+        }
+        else {
+            return 0
+        }
     }
     
     // Logs methods

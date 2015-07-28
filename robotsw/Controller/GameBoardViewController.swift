@@ -20,12 +20,20 @@ class GameBoardViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        self.setContentViewOnSize(columns: 20)
+        self.setContentViewOnSize(columns: 5)
         self.contentTable.setContentArraySize(x: self.x, y: self.y)
-        self.contentTable.setNumberOfEnemies(10)
+        self.contentTable.setNumberOfEnemies(2)
         self.contentTable.setPlayerRandom()
         self.contentTable.setEnemiesRandom()
         self.contentTable.logContentArray()
+        
+        println("player \(self.contentTable.player.x), \(self.contentTable.player.y)")
+        var player = self.contentTable.getFieldPlayer()
+        println(self.contentTable.move(field: player, direction: 8))
+        println("player \(self.contentTable.player.x), \(self.contentTable.player.y)")
+        
+        self.contentTable.logContentArray()
+        
         self.refreshContentView(self.contentTable)
     }
     
