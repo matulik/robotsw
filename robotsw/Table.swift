@@ -153,17 +153,6 @@ class Table {
         }
     }
     
-    // Logs methods
-    func logContentArray() {
-        for x in 0..<self.x {
-            for y in 0..<self.y {
-                //print("x:\(x), y:\(y)")
-                print(self.getFieldOnXY(x: x, y: y).fieldType)
-            }
-            println()
-        }
-    }
-    
     // Move methods
     // in cardinal directions
     
@@ -176,7 +165,10 @@ class Table {
     // 1 if enemies dead
     // 2 if player dead
     
-    func moveN(#x: Int, y: Int, direction: Int) -> Int {
+    func move(#field: Field, direction: Int) -> Int {
+        var x = field.x
+        var y = field.y
+        
         if (x < 0 || y < 0 || direction > 8 || direction <= 0){
             return -1
         }
@@ -256,6 +248,17 @@ class Table {
             return 2
         }
         return 5
+    }
+    
+    // Logs methods
+    func logContentArray() {
+        for x in 0..<self.x {
+            for y in 0..<self.y {
+                //print("x:\(x), y:\(y)")
+                print(self.getFieldOnXY(x: x, y: y).fieldType)
+            }
+            println()
+        }
     }
 }
 
