@@ -277,6 +277,7 @@ class Table {
     }
     
     func getDirectionToPlayer(#field: Field) -> Int {
+        // TODO FIX DIRECTIONS
         let ex = field.x
         let ey = field.y
         let px = self.player.x
@@ -308,6 +309,32 @@ class Table {
         }
         else {
             return 0
+        }
+    }
+    
+    // Move all of table
+    func moveTable(direction: Int) {
+        for x in 0..<self.x {
+            for y in 0..<self.y {
+                var field = self.getFieldOnXY(x: x, y: y)
+                if (field.moved == true) {
+                    continue
+                }
+                if (field.fieldType == 0) {
+                    continue
+                }
+                if (field.fieldType == 1) {
+                    self.move(field: field, direction: direction)
+                    field.moved = true
+                }
+                if (field.fieldType == 2) {
+                    self.move(field: field, direction: self.getDirectionToPlayer(field: field))
+                    field.moved = true
+                }
+                if (field.fieldType == 3) {
+                    continue
+                }
+            }
         }
     }
     

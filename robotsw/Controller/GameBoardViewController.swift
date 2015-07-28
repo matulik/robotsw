@@ -19,9 +19,9 @@ class GameBoardViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setContentViewOnSize(columns: 5)
+        self.setContentViewOnSize(columns: 30)
         self.contentTable.setContentArraySize(x: self.x, y: self.y)
-        self.contentTable.setNumberOfEnemies(2)
+        self.contentTable.setNumberOfEnemies(5)
         self.contentTable.setPlayerRandom()
         self.contentTable.setEnemiesRandom()
         self.contentTable.logContentArray()
@@ -30,6 +30,9 @@ class GameBoardViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    // Buttons (in future replace by swipe gesture)
+
+    //
     
     // Creating game's board. #TODO add in argument UIView object
     func setContentViewOnSize(#columns: Int) {
@@ -71,6 +74,7 @@ class GameBoardViewController: UIViewController {
                 var tag = y*100+x
                 var label : UILabel = self.contentView.viewWithTag(tag) as! UILabel
                 var labelContent = String(format: "%d", self.contentTable.getFieldOnXY(x: x-1, y: y-1).getFieldType())
+                self.contentTable.getFieldOnXY(x: x-1, y: y-1).moved = false
                 if (labelContent == "0") {
                     label.text = ""
                 }
