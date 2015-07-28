@@ -20,7 +20,7 @@ class GameBoardViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        self.setContentViewOnSize(columns: 5)
+        self.setContentViewOnSize(columns: 20)
         self.contentTable.setContentArraySize(x: self.x, y: self.y)
         self.contentTable.setNumberOfEnemies(10)
         self.contentTable.setPlayerRandom()
@@ -44,18 +44,18 @@ class GameBoardViewController: UIViewController {
         var rows = Int(height/viewSize)+1
         
         println("labelSize:\(viewSize), rows:\(rows)")
-        self.x = columns
-        self.y = rows
+        self.x = rows
+        self.y = columns
         
-        for y in 1...rows {
-            for x in 1...columns {
+        for y in 1...self.y {
+            for x in 1...self.x {
                 // View
-                var view = UIView(frame: CGRectMake(CGFloat(x)*viewSize, CGFloat(y)*viewSize, viewSize, viewSize))
+                var view = UIView(frame: CGRectMake(CGFloat(y)*viewSize-viewSize, CGFloat(x)*viewSize-viewSize, viewSize, viewSize))
                 view.backgroundColor = UIColor.clearColor()
                 // Label, but can be image or whatever <-- #TODO in future
                 var label = UILabel(frame: CGRectMake(0, 0, viewSize, viewSize))
                 label.backgroundColor = UIColor.clearColor()
-                label.text = "x"
+                label.text = ""
                 label.textAlignment = NSTextAlignment.Center
                 label.tag = y*100+x
                 view.addSubview(label)
@@ -68,13 +68,23 @@ class GameBoardViewController: UIViewController {
         if(table.x != self.x || table.y != self.y) {
             return
         }
-        for y in 1...self.y {
-            for x in 1...self.x {
+        for x in 1...self.x {
+            for y in 1...self.y {
                 var tag = y*100+x
-                println(tag)
-                // TODO refreshing
-                //var label : UILabel = self.contentView.viewWithTag(tag) as! UILabel
-                //label.text = String(format: "%d", self.contentTable.getFieldOnXY(x: y, y: x).getFieldType())
+                var label : UILabel = self.contentView.viewWithTag(tag) as! UILabel
+                var labelContent = String(format: "%d", self.contentTable.getFieldOnXY(x: x-1, y: y-1).getFieldType())
+                if (labelContent == "0") {
+                    label.text = ""
+                }
+                else if (labelContent == "1") {
+                    label.text = "♘"
+                }
+                else if (labelContent == "2") {
+                    label.text = "@"
+                }
+                else if (labelContent == "3") {
+                    label.text = "#"
+                }
             }
         }
     }
