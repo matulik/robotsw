@@ -20,15 +20,11 @@ class GameBoardViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        self.setContentViewOnSize(columns: 2)
+        self.setContentViewOnSize(columns: 20)
         self.contentTable.setContentArraySize(x: self.x, y: self.y)
         self.contentTable.setNumberOfEnemies(10)
         self.contentTable.setPlayerRandom()
         self.contentTable.setEnemiesRandom()
-        
-        let player = contentTable.player
-        self.contentTable.move(field: player, direction: 1)
-        
         self.contentTable.logContentArray()
         self.refreshContentView(self.contentTable)
     }
@@ -59,7 +55,7 @@ class GameBoardViewController: UIViewController {
                 // Label, but can be image or whatever <-- #TODO in future
                 var label = UILabel(frame: CGRectMake(0, 0, viewSize, viewSize))
                 label.backgroundColor = UIColor.clearColor()
-                label.text = "x"
+                label.text = ""
                 label.textAlignment = NSTextAlignment.Center
                 label.tag = y*100+x
                 view.addSubview(label)
@@ -75,9 +71,20 @@ class GameBoardViewController: UIViewController {
         for x in 1...self.x {
             for y in 1...self.y {
                 var tag = y*100+x
-                // TODO refreshing
                 var label : UILabel = self.contentView.viewWithTag(tag) as! UILabel
-                label.text = String(format: "%d", self.contentTable.getFieldOnXY(x: x-1, y: y-1).getFieldType())
+                var labelContent = String(format: "%d", self.contentTable.getFieldOnXY(x: x-1, y: y-1).getFieldType())
+                if (labelContent == "0") {
+                    label.text = ""
+                }
+                else if (labelContent == "1") {
+                    label.text = "♘"
+                }
+                else if (labelContent == "2") {
+                    label.text = "@"
+                }
+                else if (labelContent == "3") {
+                    label.text = "#"
+                }
             }
         }
     }

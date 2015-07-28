@@ -160,6 +160,7 @@ class Table {
     // N - 1, E - 2, W - 3, S - 4
     // NE - 5, NS - 6, WE - 7, WS - 8
     // Return:
+    // -2 if crashed enemies
     // -1 if bad values or cant move
     // 0 if moved
     // 1 if enemies dead
@@ -168,6 +169,10 @@ class Table {
     func move(#field: Field, direction: Int) -> Int {
         var x = field.x
         var y = field.y
+        
+        if (field.fieldType == 3) {
+            return -2
+        }
         
         if (x < 0 || y < 0 || direction > 8 || direction <= 0){
             return -1
@@ -229,7 +234,7 @@ class Table {
             ymove = 0
         }
         
-        let fieldType = getFieldOnXY(x: x, y: y).getFieldType()
+        let fieldType = field.fieldType
 
         // Colisions
         // If next field is empty, move
@@ -246,6 +251,20 @@ class Table {
         // If on next field is enemies, and player invade
         else if ((self.getFieldOnXY(x: x+xmove, y: y+ymove).fieldType == 2) && fieldType == 1) {
             return 2
+        }
+        // If on next field is crashed enemy, and player invade 
+        else if ((self.getFieldOnXY(x: x+xmove, y: y+ymove).fieldType == 3) && fieldType == 1) {
+            return 2
+        }
+        // If on next field is enemies, and enemies invade
+        else if ((self.getFieldOnXY(x: x+xmove, y: y+ymove).fieldType == 2) && fieldType == 2) {
+            self.getFieldOnXY(x: x+xmove, y: y+ymove).setFieldType(fieldType: 3)
+            return 1
+        }
+        // If on next field is crashed enemy, and enemy invade
+        else if ((self.getFieldOnXY(x: x+xmove, y: y+ymove).fieldType == 3) && fieldType == 2) {
+            self.getFieldOnXY(x: x+xmove, y: y+ymove).setFieldType(fieldType: 3)
+            return 1
         }
         return 5
     }
