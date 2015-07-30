@@ -14,6 +14,8 @@ class Field {
     var fieldType : Int = 0
     var x : Int = -1
     var y : Int = -1
+    // Set if move in this action
+    var moved : Bool = false
     
     init() {
         self.setFieldType(fieldType: 0)
@@ -56,5 +58,9 @@ class Field {
             self.x = x
             self.y = y
         }
+    }
+    
+    func printFieldXY() {
+        println("x:\(self.x), y:\(self.y)")
     }
 }

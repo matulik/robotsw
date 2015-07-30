@@ -18,21 +18,62 @@ class GameBoardViewController: UIViewController {
     @IBOutlet weak var controlView: UIView!
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
-        self.setContentViewOnSize(columns: 20)
+        self.setContentViewOnSize(columns: 30)
         self.contentTable.setContentArraySize(x: self.x, y: self.y)
         self.contentTable.setNumberOfEnemies(10)
         self.contentTable.setPlayerRandom()
         self.contentTable.setEnemiesRandom()
-        self.contentTable.logContentArray()
         self.refreshContentView(self.contentTable)
     }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    // Buttons (in future replace by swipe gesture)
+
+    @IBAction func buttonU(sender: AnyObject) {
+        self.moveOnDirection(1)
+    }
     
+    @IBAction func buttonL(sender: AnyObject) {
+        self.moveOnDirection(4)
+    }
+    
+    @IBAction func buttonR(sender: AnyObject) {
+        self.moveOnDirection(2)
+    }
+    
+    @IBAction func buttonD(sender: AnyObject) {
+        self.moveOnDirection(3)
+    }
+    
+    @IBAction func buttonUR(sender: AnyObject) {
+        self.moveOnDirection(5)
+    }
+    
+    @IBAction func buttonUL(sender: AnyObject) {
+        self.moveOnDirection(6)
+    }
+    
+    @IBAction func buttonDR(sender: AnyObject) {
+        self.moveOnDirection(7)
+    }
+    
+    @IBAction func buttonDL(sender: AnyObject) {
+        self.moveOnDirection(8)
+    }
+    
+    func moveOnDirection(direction : Int) {
+        if (self.contentTable.result == 2) {
+            println("game over")
+            self.refreshContentView(self.contentTable)
+            return
+        }
+        self.contentTable.move(field: self.contentTable.player, direction: direction)
+        self.contentTable.moveTable(direction)
+        self.refreshContentView(self.contentTable)
+    }
+
     // Creating game's board. #TODO add in argument UIView object
     func setContentViewOnSize(#columns: Int) {
         // Creating content view
@@ -73,6 +114,8 @@ class GameBoardViewController: UIViewController {
                 var tag = y*100+x
                 var label : UILabel = self.contentView.viewWithTag(tag) as! UILabel
                 var labelContent = String(format: "%d", self.contentTable.getFieldOnXY(x: x-1, y: y-1).getFieldType())
+                var field : Field = self.contentTable.getFieldOnXY(x: x-1, y: y-1)
+                field.moved = false
                 if (labelContent == "0") {
                     label.text = ""
                 }
@@ -87,5 +130,6 @@ class GameBoardViewController: UIViewController {
                 }
             }
         }
+        self.contentTable.player.printFieldXY()
     }
 }
