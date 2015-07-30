@@ -9,8 +9,8 @@
 import Foundation
 
 class Table {
-    var contentArray = Array<Array<Field>>()
-    var enemiesArray = Array<Field>()
+    var contentArray = [[Field]]()
+    var enemiesArray = [Field]()
     var player = Field()
     var x : Int = 0
     var y : Int = 0
@@ -18,7 +18,8 @@ class Table {
     var numberOfEnemies : Int = 0
     var numberOfTeleports : Int = 0
     
-    
+    var result : Int = 0
+
     
     init(x : Int, y : Int) {
         self.setContentArraySize(x: x, y: y)
@@ -109,19 +110,25 @@ class Table {
     func setFieldOnXY(#x: Int, y: Int, fieldType: Int) {
         if (fieldType == 0) {
             self.contentArray[x][y].setFieldType(fieldType: fieldType)
+            self.contentArray[x][y].setFieldXY(x: x, y: y)
+            return
         }
         else if (fieldType == 1) {
             self.contentArray[x][y].setFieldType(fieldType: fieldType)
-            self.player.x = x
-            self.player.y = y
+            self.contentArray[x][y].setFieldXY(x: x, y: y)
+            self.player = self.contentArray[x][y]
+            return
         }
         else if (fieldType == 2) {
             self.contentArray[x][y].setFieldType(fieldType: fieldType)
             self.contentArray[x][y].setFieldXY(x: x, y: y)
             self.enemiesArray.append(self.getFieldOnXY(x: x, y: y))
+            return
         }
         else if (fieldType == 3) {
             self.contentArray[x][y].setFieldType(fieldType: fieldType)
+            self.contentArray[x][y].setFieldXY(x: x, y: y)
+            return
         }
     }
     
@@ -149,7 +156,6 @@ class Table {
             let y = Int(arc4random_uniform(UInt32(self.y)))
             if(self.getFieldOnXY(x: x, y: y).fieldType == 0) {
                 self.setFieldOnXY(x: x, y: y, fieldType: 1)
-                println("set player on: \(x), \(y)")
                 break
             }
             else {
@@ -174,7 +180,7 @@ class Table {
     func move(#field: Field, direction: Int) -> Int {
         var x = field.x
         var y = field.y
-        let fieldType = field.fieldType
+        var fieldType = field.fieldType
         
         if (field.fieldType == 3) {
             return -2
@@ -244,23 +250,27 @@ class Table {
         // If next field is empty, move
         if (self.getFieldOnXY(x: x+xmove, y: y+ymove).fieldType == 0) {
             if (fieldType == 1) {
-                self.player.x = x+xmove
-                self.player.y = y+ymove
+                self.player.setFieldXY(x: x+xmove, y: y+ymove)
+                self.player.moved = true
             }
             self.setFieldOnXY(x: x, y: y, fieldType: 0)
             self.setFieldOnXY(x: x+xmove, y: y+ymove, fieldType: fieldType)
+            self.getFieldOnXY(x: x+xmove, y: y+ymove).moved = true
             return 0
         }
         // If on next field is player, and enemies invade
         else if ((self.getFieldOnXY(x: x+xmove, y: y+ymove).fieldType == 1) && fieldType == 2) {
+            self.result = 2
             return 2
         }
         // If on next field is enemies, and player invade
         else if ((self.getFieldOnXY(x: x+xmove, y: y+ymove).fieldType == 2) && fieldType == 1) {
+            self.result = 2
             return 2
         }
         // If on next field is crashed enemy, and player invade 
         else if ((self.getFieldOnXY(x: x+xmove, y: y+ymove).fieldType == 3) && fieldType == 1) {
+            self.result = 2
             return 2
         }
         // If on next field is enemies, and enemies invade
@@ -277,7 +287,6 @@ class Table {
     }
     
     func getDirectionToPlayer(#field: Field) -> Int {
-        // TODO FIX DIRECTIONS
         let ex = field.x
         let ey = field.y
         let px = self.player.x
@@ -296,10 +305,10 @@ class Table {
             return 3
         }
         if (ex > px && ey > py) {
-            return 5
+            return 6
         }
         if (ex > px && ey < py) {
-            return 6
+            return 5
         }
         if (ex < px && ey > py){
             return 8
@@ -316,7 +325,7 @@ class Table {
     func moveTable(direction: Int) {
         for x in 0..<self.x {
             for y in 0..<self.y {
-                var field = self.getFieldOnXY(x: x, y: y)
+                var field : Field = self.contentArray[x][y]
                 if (field.moved == true) {
                     continue
                 }
@@ -324,12 +333,12 @@ class Table {
                     continue
                 }
                 if (field.fieldType == 1) {
-                    self.move(field: field, direction: direction)
-                    field.moved = true
+                    self.move(field: self.player, direction: direction)
+//                    self.player.moved = true
                 }
                 if (field.fieldType == 2) {
                     self.move(field: field, direction: self.getDirectionToPlayer(field: field))
-                    field.moved = true
+//                    self.contentArray[x][y].moved = true
                 }
                 if (field.fieldType == 3) {
                     continue

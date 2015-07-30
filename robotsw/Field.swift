@@ -59,4 +59,8 @@ class Field {
             self.y = y
         }
     }
+    
+    func printFieldXY() {
+        println("x:\(self.x), y:\(self.y)")
+    }
 }
