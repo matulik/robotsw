@@ -5,7 +5,7 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--Game Board View Controller-->
+        <!--Robotsw-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="GameBoardViewController" customModule="robotsw" customModuleProvider="target" sceneMemberID="viewController">
@@ -113,6 +113,10 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LTx-xb-yJZ">
                                 <rect key="frame" x="30" y="94" width="540" height="480"/>
                                 <color key="backgroundColor" red="0.2901960784" green="0.6705882353" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="LcG-RF-b87" appends="YES" id="sLf-Hw-RGR"/>
+                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.2901960784" green="0.6705882353" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -154,12 +158,17 @@
                             <constraint firstItem="d38-sO-kdF" firstAttribute="top" secondItem="IJ9-0B-qMN" secondAttribute="bottom" id="zOB-r2-ha9"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="BdK-Ko-k4d"/>
+                    <navigationItem key="navigationItem" title="Robotsw" id="BdK-Ko-k4d"/>
                     <connections>
                         <outlet property="contentView" destination="LTx-xb-yJZ" id="u2h-ut-pOe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="up" id="LcG-RF-b87">
+                    <connections>
+                        <action selector="swipeTeleport:" destination="BYZ-38-t0r" id="nWP-ph-n3w"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1304" y="908"/>
         </scene>

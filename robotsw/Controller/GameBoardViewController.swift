@@ -9,7 +9,7 @@
 import UIKit
 
 class GameBoardViewController: UIViewController {
-
+    
     var contentTable : Table = Table(x: 0, y: 0)
     var x : Int = 0
     var y : Int = 0
@@ -19,9 +19,10 @@ class GameBoardViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setContentViewOnSize(columns: 30)
+        self.setContentViewOnSize(columns: 20)
         self.contentTable.setContentArraySize(x: self.x, y: self.y)
         self.contentTable.setNumberOfEnemies(10)
+        self.contentTable.setNumberOfTeleports(5)
         self.contentTable.setPlayerRandom()
         self.contentTable.setEnemiesRandom()
         self.refreshContentView(self.contentTable)
@@ -30,50 +31,56 @@ class GameBoardViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     // Buttons (in future replace by swipe gesture)
-
+    @IBAction func swipeTeleport(sender: AnyObject) {
+        self.contentTable.teleportPlayer()
+        self.moveOnDirection(0, player: false)
+    }
+    
     @IBAction func buttonU(sender: AnyObject) {
-        self.moveOnDirection(1)
+        self.moveOnDirection(1, player: true)
     }
     
     @IBAction func buttonL(sender: AnyObject) {
-        self.moveOnDirection(4)
+        self.moveOnDirection(4, player: true)
     }
     
     @IBAction func buttonR(sender: AnyObject) {
-        self.moveOnDirection(2)
+        self.moveOnDirection(2, player: true)
     }
     
     @IBAction func buttonD(sender: AnyObject) {
-        self.moveOnDirection(3)
+        self.moveOnDirection(3, player: true)
     }
     
     @IBAction func buttonUR(sender: AnyObject) {
-        self.moveOnDirection(5)
+        self.moveOnDirection(5, player :true)
     }
     
     @IBAction func buttonUL(sender: AnyObject) {
-        self.moveOnDirection(6)
+        self.moveOnDirection(6, player: true)
     }
     
     @IBAction func buttonDR(sender: AnyObject) {
-        self.moveOnDirection(7)
+        self.moveOnDirection(7, player: true)
     }
     
     @IBAction func buttonDL(sender: AnyObject) {
-        self.moveOnDirection(8)
+        self.moveOnDirection(8, player: true)
     }
     
-    func moveOnDirection(direction : Int) {
+    func moveOnDirection(direction : Int, player: Bool) {
         if (self.contentTable.result == 2) {
             println("game over")
             self.refreshContentView(self.contentTable)
             return
         }
-        self.contentTable.move(field: self.contentTable.player, direction: direction)
+        if(player) {
+            self.contentTable.move(field: self.contentTable.player, direction: direction)
+        }
         self.contentTable.moveTable(direction)
         self.refreshContentView(self.contentTable)
     }
-
+    
     // Creating game's board. #TODO add in argument UIView object
     func setContentViewOnSize(#columns: Int) {
         // Creating content view

@@ -332,16 +332,36 @@ class Table {
                 if (field.fieldType == 0) {
                     continue
                 }
-                if (field.fieldType == 1) {
-                    self.move(field: self.player, direction: direction)
+//                if (field.fieldType == 1) {
+//                    self.move(field: self.player, direction: direction)
 //                    self.player.moved = true
-                }
+//                }
                 if (field.fieldType == 2) {
                     self.move(field: field, direction: self.getDirectionToPlayer(field: field))
 //                    self.contentArray[x][y].moved = true
                 }
                 if (field.fieldType == 3) {
                     continue
+                }
+            }
+        }
+    }
+    
+    // Teleport player
+    func teleportPlayer() {
+        if (self.numberOfTeleports == 0) {
+            println("Cannot teleport")
+        }
+        else {
+            while(true) {
+                let x = Int(arc4random_uniform(UInt32(self.x)))
+                let y = Int(arc4random_uniform(UInt32(self.y)))
+                
+                if(self.getFieldOnXY(x: x, y: y).getFieldType() == 0) {
+                    self.setFieldOnXY(x: self.player.x, y: self.player.y, fieldType: 0)
+                    self.setFieldOnXY(x: x, y: y, fieldType: 1)
+                    self.numberOfTeleports--
+                    break
                 }
             }
         }
